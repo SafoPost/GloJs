@@ -7,12 +7,8 @@ let isNumber = function (n) {
 let money;
 
 do {
-  money = prompt('Ваш месячный доход?');
-} while (!isNumber(money)) {
-  money = prompt('Ваш месячный доход?');
-};
-
-start();
+  money = +prompt('Ваш месячный доход?');
+} while (!isNumber(money));
 
 let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
 let deposit = confirm('Есть ли у вас депозит в банке?');
