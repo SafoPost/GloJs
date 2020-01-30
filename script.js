@@ -34,23 +34,25 @@ let expenses = [];
 
 let getExpensesMonth = function () {
   let sum = 0;
+  let m = 0;
   for (let i = 0; i < 2; i++) {
     expenses[i] = prompt('Введите обязательную статью расходов?');
-    sum += prompt('Во сколько это обойдется?');
-    while (!isNumber(sum)) {
-      sum = prompt('Во сколько это обойдется?');
-    };
+    do {
+      m = prompt('Во сколько это обойдется?');
+    }
+    while (!isNumber(m));
+    sum += +m;
   };
   console.log(expenses);
   return sum;
 };
 
-let expensesMonth = getExpensesMonth();
+let expensesAmonth = getExpensesMonth();
 
-console.log('Обязательные расходы за месяц: ' + expensesMonth);
+console.log('Обязательные расходы за месяц: ' + expensesAmonth);
 
 function getAccumulatedMonth() {
-  return money - expensesMonth;
+  return money - expensesAmonth;
 };
 
 getAccumulatedMonth();
