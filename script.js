@@ -6,9 +6,13 @@ let isNumber = function (n) {
 
 let money;
 
-do {
-  money = +prompt('Ваш месячный доход?');
-} while (!isNumber(money));
+let start = function () {
+  do {
+    money = +prompt('Ваш месячный доход?');
+  } while (!isNumber(money));
+};
+
+start();
 
 let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
 let deposit = confirm('Есть ли у вас депозит в банке?');
