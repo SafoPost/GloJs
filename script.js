@@ -8,7 +8,7 @@ let money;
 
 let start = function () {
   do {
-    money = +prompt('Ваш месячный доход?');
+    money = prompt('Ваш месячный доход?');
   } while (!isNumber(money));
 };
 
@@ -36,9 +36,9 @@ let getExpensesMonth = function () {
   let sum = 0;
   for (let i = 0; i < 2; i++) {
     expenses[i] = prompt('Введите обязательную статью расходов?');
-    sum += +prompt('Во сколько это обойдется?');
+    sum += prompt('Во сколько это обойдется?');
     while (!isNumber(sum)) {
-      sum = +prompt('Во сколько это обойдется?');
+      sum = prompt('Во сколько это обойдется?');
     };
   };
   console.log(expenses);
