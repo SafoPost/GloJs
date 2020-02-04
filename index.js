@@ -1,11 +1,11 @@
 'use strict';
 
-let btnStart = document.getElementById('#start'); // кнопка рассчитать
+let btnStart = document.getElementById('start'); // кнопка рассчитать
 
 console.log(btnStart);
 
-let btnIncomeAdd = document.getElementsByClassName('.income_add'); // доп.элем
-let btnExpensesAdd = document.getElementsByClassName('.expenses_add');
+let btnIncomeAdd = document.getElementsByTagName('button')[0]; // доп.расходы
+let btnExpensesAdd = document.getElementsByTagName('button')[1]; // доп.возмож.рарходы
 
 console.log(btnIncomeAdd, btnExpensesAdd);
 
@@ -17,12 +17,12 @@ let additionalIncomeItem = document.querySelectorAll('.additional_income-item');
 
 console.log(additionalIncomeItem);
 
-let budgetDayValue = document.querySelectorAll('.budget_day-value');
-let expensesMonthValue = document.querySelectorAll('expenses_month-value');
-let additionalIncomeValue = document.querySelectorAll('.additional_income-value');
-let additionalExpensesValue = document.querySelectorAll('.additional_expenses-value');
-let incomePeriodValue = document.querySelectorAll('.income_period-value');
-let targetMonthValue = document.querySelectorAll('.target_month-value');
+let budgetDayValue = document.getElementsByClassName('.result-total')[1];
+let expensesMonthValue = document.getElementsByClassName('result-total')[2];
+let additionalIncomeValue = document.getElementsByClassName('.result-total')[3];
+let additionalExpensesValue = document.getElementsByClassName('.result-total')[4];
+let incomePeriodValue = document.getElementsByClassName('.result-total')[5];
+let targetMonthValue = document.getElementsByClassName('.result-total')[6];
 
 console.log(budgetDayValue, expensesMonthValue, additionalIncomeValue, additionalExpensesValue, incomePeriodValue, targetMonthValue);
 
