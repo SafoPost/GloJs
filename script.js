@@ -32,7 +32,7 @@ let appData = {
       let itemIncome;
       do {
         itemIncome = prompt('Какой у вас дополнительный заработок?', 'Таксую');
-      } while (isNumber(itemIncome));
+      } while (isNumber(itemIncome) || itemIncome == null);
       let cashIncome;
       do {
         cashIncome = prompt('Склолько в месяц вы на этом зарабатываете?', 10000);
@@ -43,7 +43,7 @@ let appData = {
       let keyExpenses;
       do {
         keyExpenses = prompt('Введите обязательную статью расходов?');
-      } while (isNumber(keyExpenses));
+      } while (isNumber(keyExpenses) || keyExpenses == null);
       let valueExpenses = 0;
       do {
         valueExpenses = prompt('Во сколько это обойдется?');
@@ -55,15 +55,14 @@ let appData = {
     for (let i = 0; i < appData.addExpenses.length; i++) {
       appData.addExpenses[i] = appData.addExpenses[i].charAt(0).toUpperCase() + appData.addExpenses[i].substring(1);
     };
-    console.log(appData.addExpenses);
+    console.log(appData.addExpenses.join(', '));
     appData.deposit = confirm('Есть ли у вас депозит в банке?');
   },
   getExpensesMonth: function () { // Сумма обязательных расходов за месяц
-    let sum = 0;
     for (let key in appData.expenses) {
-      sum += appData.expenses[key];
+      appData.expensesMonth += appData.expenses[key];
     }
-    return sum;
+    return appData.expensesMonth;
   },
   getBudget: function () { // Считаем бюджет на месяц/день
     appData.budgetMonth = (appData.budget - appData.expensesMonth);
