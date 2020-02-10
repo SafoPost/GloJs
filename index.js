@@ -8,7 +8,6 @@ let btnCancel = document.getElementById('cancel');
 let btnIncomePlus = document.getElementsByTagName('button')[0];
 let btnExpensesPlus = document.getElementsByTagName('button')[1];
 
-
 // "галочка" депозит
 let depositCheck = document.querySelector('#deposit-check');
 
@@ -61,19 +60,28 @@ let appData = {
   percentDeposit: 0,
   moneyDeposit: 0,
   start: function () {
+    if (salaryAmount.value.trim() === '') {
+      btnStart.disabled = true;
+    } else {
+      btnStart.disabled = false;
+      appData.start();
 
-    this.budget = +salaryAmount.value;
+      btnStart.style.display = 'none';
+      btnCancel.style.display = 'block';
+      btnCancel.addEventListener('click', appData.reset)
 
-    this.getExpenses();
-    this.getIncome();
-    this.getExpensesMonth();
-    this.getAddExpenses();
-    this.getAddIncome();
-    this.getBudget();
+      this.budget = +salaryAmount.value;
 
-    this.showResult();
-    this.blockInput();
+      this.getExpenses();
+      this.getIncome();
+      this.getExpensesMonth();
+      this.getAddExpenses();
+      this.getAddIncome();
+      this.getBudget();
 
+      this.showResult();
+      this.blockInput();
+    }
   },
   showResult: function () { // Выводим все рассчёты
     budgetMonthValue.value = this.budgetMonth;
@@ -202,19 +210,7 @@ let appData = {
 };
 
 
-btnStart.addEventListener('click', function () {
-  if (salaryAmount.value.trim() === '') {
-    btnStart.disabled = true;
-  } else {
-    btnStart.disabled = false;
-    appData.start();
-
-    btnStart.style.display = 'none';
-    btnCancel.style.display = 'block';
-    console.log(appData.incomeMonth);
-    btnCancel.addEventListener('click', appData.reset)
-  }
-});
+btnStart.addEventListener('click', appData.start.bind(appData));
 
 btnIncomePlus.addEventListener('click', appData.addIncomeBlock);
 btnExpensesPlus.addEventListener('click', appData.addExpensesBlock);
@@ -223,12 +219,7 @@ periodSelect.addEventListener('input', appData.getPeriod);
 
 
 
-/* if (appData.getTargetMonth() > 0) {
-  console.log('Цель будет достигнута за ' + appData.getTargetMonth() + ' месяцев');
-} else {
-  console.log('К сожалению, цель не будет достигнута');
-};
-
+/*
 for (let key in appData) {
   console.log('Наша программа включает в себя данные:' +
     '\n дополнительный заработок: ' + appData.income +
