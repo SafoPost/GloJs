@@ -61,8 +61,10 @@ let appData = {
   moneyDeposit: 0,
   start: function () {
     if (salaryAmount.value.trim() === '') {
-      alert('Введите данные!')
+      btnStart.disabled = true;
     } else {
+      btnStart.disabled = false;
+      appData.start();
 
       btnStart.style.display = 'none';
       btnCancel.style.display = 'block';
