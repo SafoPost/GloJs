@@ -66,7 +66,6 @@ AppData.prototype.start = function () {
 
   btnStart.style.display = 'none';
   btnCancel.style.display = 'block';
-  console.log('Start: ' + this);
   this.budget = +salaryAmount.value;
   
   this.getExpenses();
@@ -113,23 +112,25 @@ AppData.prototype.addExpensesBlock = function () { // Добавляем пол�
 };
 
 AppData.prototype.getExpenses = function () { // Выводим расходы:значения
+  const _this = this;
   expensesItems.forEach(function (item) {
     let itemExpenses = item.querySelector('.expenses-title').value;
     let cashExpenses = item.querySelector('.expenses-amount').value;
     if (itemExpenses !== '' && cashExpenses !== '') {
-      this.expenses[itemExpenses] = +cashExpenses;
+      _this.expenses[itemExpenses] = +cashExpenses;
     }
-  }, this)
+  });
 };
 
 AppData.prototype.getIncome = function () {
+  const _this = this;
   incomeItems.forEach(function (item) {
     let itemIncome = item.querySelector('.income-title').value;
     let cashIncome = item.querySelector('.income-amount').value;
     if (itemIncome !== '' && cashIncome !== '') {
-      this.income[itemIncome] = +cashIncome;
+      _this.income[itemIncome] = +cashIncome;
     }
-  }, this);
+  });
   for (let key in this.income) {
     this.incomeMonth += +this.income[key]
   }
@@ -137,26 +138,28 @@ AppData.prototype.getIncome = function () {
 
 AppData.prototype.getAddExpenses = function () {
   let addExpenses = additionalExpensesItem.value.split(',');
+  const _this = this;
   addExpenses.forEach(function (item) {
     item = item.trim();
     if (item !== '') {
-      this.addExpenses.push(item);
+      _this.addExpenses.push(item);
     }
-  }, this)
+  })
 };
 
 AppData.prototype.getAddIncome = function () {
+  const _this = this;
   additionalIncomeItem.forEach(function (item) {
     let itemValue = item.value.trim();
     if (itemValue !== '') {
-      this.addIncome.push(itemValue);
+      _this.addIncome.push(itemValue);
     }
-  }, this)
+  })
 };
 
 AppData.prototype.getExpensesMonth = function () { // Сумма обязательных расходов за месяц
   for (let key in this.expenses) {
-    this.expensesMonth += +this.expenses[key];
+    this.expensesMonth += +this.expenses[key]
   }
   return this.expensesMonth;
 };
@@ -164,8 +167,6 @@ AppData.prototype.getExpensesMonth = function () { // Сумма обязате�
 AppData.prototype.getBudget = function () { // Считаем бюджет на месяц/день
   this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
   this.budgetDay = Math.ceil(this.budgetMonth / 30);
-
-  console.log(typeof this.budget + this.budget.value);
 };
 
 AppData.prototype.getTargetMonth = function () { // Период, за который цель будет достигнута
@@ -185,14 +186,13 @@ AppData.prototype.getStatusIncome = function () { // Выводим уровен
 };
 
 AppData.prototype.getInfoDeposit = function () {
-  const _this = this;
   if (this.deposit) {
     do {
-      _this.percentDeposit = prompt('Какой годовой процент?', 10);
-    } while (!isNumber(_this.percentDeposit));
+      this.percentDeposit = prompt('Какой годовой процент?', 10);
+    } while (!isNumber(this.percentDeposit));
     do {
       appData.moneyDeposit = prompt('Какая сумма заложена?', 10000);
-    } while (!isNumber(_this.moneyDeposit));
+    } while (!isNumber(this.moneyDeposit));
   }
 };
 
@@ -243,7 +243,6 @@ const appData = new AppData();
 appData.eventListenerAll();
 
 console.log(appData);
-
 
 // btnStart.addEventListener('click', appData.start);
 // btnIncomePlus.addEventListener('click', appData.addIncomeBlock);
