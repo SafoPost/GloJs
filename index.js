@@ -64,25 +64,19 @@ const AppData = function () {
 
 AppData.prototype.start = function () {
 
-  if (salaryAmount.value.trim() === '') {
-    alert('Введите данные!')
-  } else {
-
-    btnStart.style.display = 'none';
-    btnCancel.style.display = 'block';
-
-    this.budget = +salaryAmount.value;
-
-    this.getExpenses();
-    this.getIncome();
-    this.getExpensesMonth();
-    this.getAddExpenses();
-    this.getAddIncome();
-    this.getBudget();
-
-    this.showResult();
-    this.lockInput();
-  }
+  btnStart.style.display = 'none';
+  btnCancel.style.display = 'block';
+  console.log('Start: ' + this);
+  this.budget = +salaryAmount.value;
+  
+  this.getExpenses();
+  this.getIncome();
+  this.getExpensesMonth();
+  this.getAddExpenses();
+  this.getAddIncome();
+  this.getBudget();
+  this.showResult();
+  this.lockInput();
 };
 
 AppData.prototype.showResult = function () { // Выводим все рассчёты
@@ -94,12 +88,10 @@ AppData.prototype.showResult = function () { // Выводим все рассч
   additionalIncomeValue.value = this.addIncome.join(', ');
   targetMonthValue.value = this.getTargetMonth();
   incomePeriodValue.value = this.calcPeriod();
-
   periodSelect.addEventListener('change', function () {
     periodAmount.textContent = periodSelect.value;
     incomePeriodValue.value = _this.calcPeriod()
   });
-
 };
 
 AppData.prototype.addIncomeBlock = function () { // Добавляем поля для ввода доп.заработка
@@ -170,8 +162,10 @@ AppData.prototype.getExpensesMonth = function () { // Сумма обязате�
 };
 
 AppData.prototype.getBudget = function () { // Считаем бюджет на месяц/день
-  this.budgetMonth = (this.budget + this.incomeMonth - this.expensesMonth);
+  this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
   this.budgetDay = Math.ceil(this.budgetMonth / 30);
+
+  console.log(typeof this.budget + this.budget.value);
 };
 
 AppData.prototype.getTargetMonth = function () { // Период, за который цель будет достигнута
@@ -227,14 +221,22 @@ AppData.prototype.reset = function () {
 };
 
 AppData.prototype.eventListenerAll = function () {
-  // const _this = this;
-  btnStart.addEventListener('click', this.start);
+
+  btnStart.disabled = true;
+  salaryAmount.addEventListener('input', function (event) {
+    if (event.target.value.trim() === '') {
+      btnStart.disabled = true;
+    } else {
+      btnStart.disabled = false;
+    }
+  });
+  btnStart.addEventListener('click', this.start.bind(this));
   btnIncomePlus.addEventListener('click', this.addIncomeBlock);
   btnExpensesPlus.addEventListener('click', this.addExpensesBlock);
   periodSelect.addEventListener('input', this.getPeriod);
   btnCancel.addEventListener('click', this.reset)
-
 };
+
 
 const appData = new AppData();
 
