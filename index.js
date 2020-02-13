@@ -54,7 +54,7 @@ const AppData = function () {
   this.incomeMonth = 0;
   this.addIncome = [];
   this.expenses = {};
-  this.expensesMont = 0;
+  this.expensesMonth = 0;
   this.addExpenses = [];
   this.deposit = false;
   this.percentDeposit = 0;
@@ -100,6 +100,7 @@ AppData.prototype.addIncomeBlock = function () { // Добавляем поля 
   if (incomeItems.length === 3) {
     btnIncomePlus.style.display = 'none';
   }
+
 };
 
 AppData.prototype.addExpensesBlock = function () { // Добавляем поля для ввода доп.расходов
@@ -171,6 +172,7 @@ AppData.prototype.getBudget = function () { // Считаем бюджет на 
 
 AppData.prototype.getTargetMonth = function () { // Период, за который цель будет достигнута
   return Math.ceil(targetAmount.value / this.budgetMonth);
+
 };
 
 AppData.prototype.getStatusIncome = function () { // Выводим уровень дохода
@@ -183,6 +185,7 @@ AppData.prototype.getStatusIncome = function () { // Выводим уровен
   } else {
     return ('Что то пошло не так');
   };
+  
 };
 
 AppData.prototype.getInfoDeposit = function () {
