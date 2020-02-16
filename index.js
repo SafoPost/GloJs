@@ -103,16 +103,10 @@ class AppData {
     let clonIncomeItem = incomeItems[0].cloneNode(true);
     incomeItems[0].parentNode.insertBefore(clonIncomeItem, btnIncomePlus);
     incomeItems = document.querySelectorAll('.income-items');
-    // incomeTitle = document.querySelectorAll('.income-title')[-1];
-    // incomeAmount = document.querySelectorAll('.income-amount')[-1];
-    // incomeTitle.value = '';
-    // incomeAmount.value = '';
     if (incomeItems.length === 3) {
       btnIncomePlus.style.display = 'none';
     }
-
-    // console.log(incomeTitle);
-    // console.log(incomeAmount);
+    this.checkInput();
   }
   addExpensesBlock() { // Добавляем поля для ввода доп.расходов
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
@@ -121,6 +115,7 @@ class AppData {
     if (expensesItems.length === 3) {
       btnExpensesPlus.style.display = 'none';
     }
+    this.checkInput();
   }
   getIncome() {
     incomeItems.forEach((item, index) => {
@@ -144,7 +139,6 @@ class AppData {
     });
   }
   getAddIncome() {
-    this.checkInput();
     additionalIncomeItem.forEach((item) => {
       let itemValue = item.value.trim();
       if (itemValue !== '') {
@@ -154,7 +148,6 @@ class AppData {
   }
   getAddExpenses() {
     let addExpenses = additionalExpensesItem.value.split(',');
-    this.checkInput();
     addExpenses.forEach((item) => {
       item = item.trim();
       if (item !== '') {
@@ -227,8 +220,8 @@ class AppData {
       }
     });
     btnStart.addEventListener('click', this.start.bind(this));
-    btnIncomePlus.addEventListener('click', this.addIncomeBlock);
-    btnExpensesPlus.addEventListener('click', this.addExpensesBlock);
+    btnIncomePlus.addEventListener('click', this.addIncomeBlock.bind(this));
+    btnExpensesPlus.addEventListener('click', this.addExpensesBlock.bind(this));
     periodSelect.addEventListener('input', this.getPeriod);
     btnCancel.addEventListener('click', this.reset)
   }
@@ -237,6 +230,7 @@ class AppData {
 const appData = new AppData();
 
 appData.eventListenerAll();
+
 console.log(appData);
 
 // btnStart.addEventListener('click', appData.start);
