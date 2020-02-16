@@ -11,8 +11,9 @@ const btnExpensesPlus = document.getElementsByTagName('button')[1];
 // "галочка" депозит
 const depositCheck = document.querySelector('#deposit-check');
 
-// возможные расходы
+// возможные/обязательные расходы
 const additionalIncomeItem = document.querySelectorAll('.additional_income-item');
+const additionalExpensesItem = document.querySelector('.additional_expenses-item');
 
 // поля рассчетов
 const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0];
@@ -26,11 +27,12 @@ const targetMonthValue = document.getElementsByClassName('target_month-value')[0
 
 // поля ввода
 const salaryAmount = document.querySelector('.salary-amount');
-const incomeTitle = document.querySelector('.income-title');
 let incomeItems = document.querySelectorAll('.income-items');
-const expensesTitle = document.querySelector('.expenses-title');
+let incomeTitle = document.querySelectorAll('.income-title');
+let incomeAmount = document.querySelectorAll('.income-amount');
 let expensesItems = document.querySelectorAll('.expenses-items');
-const additionalExpensesItem = document.querySelector('.additional_expenses-item');
+let expensesTitle = document.querySelector('.expenses-title');
+let expensesAmount = document.querySelector('.expenses-amount');
 const depositAmount = document.querySelector('.deposit-amount');
 const depositPercent = document.querySelector('.deposit-percent');
 const targetAmount = document.querySelector('.target-amount');
@@ -42,9 +44,7 @@ const periodAmount = document.querySelector('.period-amount');
 const resultTotal = document.querySelectorAll('.result-total');
 
 
-const isNumber = (n) => {
-  return !isNaN(parseFloat(n)) && isFinite(n)
-};
+const isNumber = (n) => !isNaN(parseFloat(n)) && isFinite(n);
 
 class AppData {
   constructor() {
@@ -65,6 +65,7 @@ class AppData {
     btnStart.style.display = 'none';
     btnCancel.style.display = 'block';
     this.budget = +salaryAmount.value;
+
 
     this.getExpenses();
     this.getIncome();
@@ -88,13 +89,30 @@ class AppData {
       incomePeriodValue.value = this.calcPeriod()
     });
   }
+  checkInput() {
+    let numInputs = document.querySelectorAll('[placeholder="Сумма"]');
+    numInputs.forEach((item) => {
+      item.addEventListener('input', function () {
+        if (!isNumber(this.value)) {
+          this.value = '';
+        }
+      })
+    })
+  }
   addIncomeBlock() { // Добавляем поля для ввода доп.заработка
     let clonIncomeItem = incomeItems[0].cloneNode(true);
     incomeItems[0].parentNode.insertBefore(clonIncomeItem, btnIncomePlus);
     incomeItems = document.querySelectorAll('.income-items');
+    // incomeTitle = document.querySelectorAll('.income-title')[-1];
+    // incomeAmount = document.querySelectorAll('.income-amount')[-1];
+    // incomeTitle.value = '';
+    // incomeAmount.value = '';
     if (incomeItems.length === 3) {
       btnIncomePlus.style.display = 'none';
     }
+
+    // console.log(incomeTitle);
+    // console.log(incomeAmount);
   }
   addExpensesBlock() { // Добавляем поля для ввода доп.расходов
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
@@ -104,54 +122,55 @@ class AppData {
       btnExpensesPlus.style.display = 'none';
     }
   }
-  getExpenses() { // Выводим расходы:значения
-    expensesItems.forEach((item) => {
-      let itemExpenses = item.querySelector('.expenses-title').value;
-      let cashExpenses = item.querySelector('.expenses-amount').value;
-      if (itemExpenses !== '' && cashExpenses !== '') {
-        this.expenses[itemExpenses] = +cashExpenses;
-      }
-    });
-  }
   getIncome() {
-    incomeItems.forEach((item) => {
+    incomeItems.forEach((item, index) => {
       let itemIncome = item.querySelector('.income-title').value;
       let cashIncome = item.querySelector('.income-amount').value;
       if (itemIncome !== '' && cashIncome !== '') {
-        this.income[itemIncome] = +cashIncome;
+        this.income[itemIncome + index] = +cashIncome;
       }
     });
     for (let key in this.income) {
       this.incomeMonth += +this.income[key]
     }
   }
-  getAddExpenses() {
-    let addExpenses = additionalExpensesItem.value.split(',');
-    const _this = this;
-    addExpenses.forEach((item) => {
-      item = item.trim();
-      if (item !== '') {
-        this.addExpenses.push(item);
+  getExpenses() { // Выводим расходы:значения
+    expensesItems.forEach((item, index) => {
+      let itemExpenses = item.querySelector('.expenses-title').value;
+      let cashExpenses = item.querySelector('.expenses-amount').value;
+      if (itemExpenses !== '' && cashExpenses !== '') {
+        this.expenses[itemExpenses + index] = +cashExpenses;
       }
-    })
+    });
   }
   getAddIncome() {
+    this.checkInput();
     additionalIncomeItem.forEach((item) => {
       let itemValue = item.value.trim();
       if (itemValue !== '') {
         this.addIncome.push(itemValue);
       }
-    })
+    });
   }
+  getAddExpenses() {
+    let addExpenses = additionalExpensesItem.value.split(',');
+    this.checkInput();
+    addExpenses.forEach((item) => {
+      item = item.trim();
+      if (item !== '') {
+        this.addExpenses.push(item);
+      }
+    });
+  }
+
   getExpensesMonth() { // Сумма обязательных расходов за месяц
     for (let key in this.expenses) {
       this.expensesMonth += +this.expenses[key]
     }
-    return this.expensesMonth;
   }
   getBudget() { // Считаем бюджет на месяц/день
     this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
-    this.budgetDay = Math.ceil(this.budgetMonth / 30);
+    this.budgetDay = Math.ceil(this.budgetMonth / 30)
   }
   getTargetMonth() { // Период, за который цель будет достигнута
     return Math.ceil(targetAmount.value / this.budgetMonth);
@@ -198,6 +217,7 @@ class AppData {
     location.reload();
   }
   eventListenerAll() {
+    this.checkInput();
     btnStart.disabled = true;
     salaryAmount.addEventListener('input', function (event) {
       if (event.target.value.trim() === '') {
@@ -217,7 +237,6 @@ class AppData {
 const appData = new AppData();
 
 appData.eventListenerAll();
-
 console.log(appData);
 
 // btnStart.addEventListener('click', appData.start);
