@@ -195,7 +195,7 @@ class AppData {
     const valueSelect = this.value;
     if (valueSelect === 'other') {
       depositPercent.style.display = 'inline-block';
-      depositPercent.value = 5;
+      depositPercent.value = '';
       depositPercent.addEventListener('input', function () {
         if (!isNumber(depositPercent.value)) {
           depositPercent.value = '';
@@ -226,6 +226,10 @@ class AppData {
     btnPlus.forEach(function (item) {
       item.disabled = true;
     });
+    depositCheck.disabled = true;
+    depositBank.disabled = true;
+    depositAmount.disabled = true;
+    depositPercent.disabled = true;
     return resultTotal.disabled = false;
   }
   reset() {
@@ -240,6 +244,7 @@ class AppData {
     } else {
       depositBank.style.display = 'none';
       depositAmount.style.display = 'none';
+      depositPercent.style.display = 'none';
       depositBank.value = '';
       depositAmount.value = '';
       this.deposit = false;
